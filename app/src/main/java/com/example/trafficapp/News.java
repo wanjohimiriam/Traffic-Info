@@ -1,47 +1,48 @@
 package com.example.trafficapp;
 
 public class News {
-    private int itemImage;
-    private String heading;
-    private String headingtwo;
-    private String headingthree;
+    private int ItemImage;
+    private int id;
+    private String streetName;
+    private String locality;
+    private String condition;
 
-    public News(int itemImage, String heading, String headingtwo, String headingthree) {
-        this.itemImage = itemImage;
-        this.heading = heading;
-        this.headingtwo = headingtwo;
-        this.headingthree = headingthree;
+    public News(int id, String streetName, String locality, String condition) {
+        this.id = id;
+        this.streetName = streetName;
+        this.locality = locality;
+        this.condition = condition;
     }
 
-    public int getItemImage() {
-        return itemImage;
+    public int getId() {
+        return id;
     }
 
-    public void setItemImage(int itemImage) {
-        this.itemImage = itemImage;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getHeading() {
-        return heading;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setHeading(String heading) {
-        this.heading = heading;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
-    public String getHeadingtwo() {
-        return headingtwo;
+    public String getLocality() {
+        return locality;
     }
 
-    public void setHeadingtwo(String headingtwo) {
-        this.headingtwo = headingtwo;
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 
-    public String getHeadingthree() {
-        return headingthree;
+    public String getCondition() {
+        return condition;
     }
 
-    public void setHeadingthree(String headingthree) {
-        this.headingthree = headingthree;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
