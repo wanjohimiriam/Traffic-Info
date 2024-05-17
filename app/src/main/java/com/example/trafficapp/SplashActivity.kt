@@ -35,14 +35,12 @@ class SplashActivity : AppCompatActivity() {
         findViewById<Button>(R.id.splash_button).setOnClickListener {
             if (checkLocationPermission()) {
                 getLocationAndSubmitReport()
-                Log.d(TAG, "Get Location ${getLocationAndSubmitReport()}")
             } else {
                 requestLocationPermission()
-                Log.d(TAG, "Request ${requestLocationPermission()}")
 
             }
-//            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-//            finish()
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish()
         }
 
     }
