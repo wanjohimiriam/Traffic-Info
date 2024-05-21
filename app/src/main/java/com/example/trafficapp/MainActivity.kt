@@ -1,6 +1,8 @@
 package com.example.trafficapp
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -8,25 +10,34 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var newsList: List<News>
     private lateinit var progressBar: ProgressBar
     private lateinit var manager: RecyclerView.LayoutManager
     private lateinit var myAdapter: RecyclerView.Adapter<MyAdapter.MyViewHolder>
     private lateinit var newRecyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh)
 
         newRecyclerView = findViewById(R.id.recyclerview)
+        swipeRefreshLayout.setOnRefreshListener(this)
         manager = LinearLayoutManager(this)
         progressBar = findViewById(R.id.progressBar)
+
+//        swipeRefreshLayout.setOnRefreshListener {
+//            getAllData() // Call your data fetch function on refresh
+//        }
+
 
         progressBar.visibility = View.VISIBLE
 
@@ -41,8 +52,18 @@ class MainActivity : AppCompatActivity() {
         newRecyclerView.adapter = myAdapter
 
         Log.d(TAG, "onCreate")
-        getAllData()
+        onRefresh()
     }
+    override fun onRefresh() {
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                getAllData()
+                swipeRefreshLayout.isRefreshing = false
+
+            },300)
+    }
+
 
     private fun getAllData() {
         progressBar.visibility = View.VISIBLE
@@ -66,6 +87,8 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG, "Failed to fetch data: ${response.code()}")
                     Toast.makeText(this@MainActivity, "Not Loaded", Toast.LENGTH_SHORT).show()
                     progressBar.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+
                 }
             }
 
@@ -74,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "Failed to fetch data: $errorMessage")
                 t.printStackTrace()
                 progressBar.visibility = View.GONE
+                swipeRefreshLayout.isRefreshing = false
             }
         })
     }

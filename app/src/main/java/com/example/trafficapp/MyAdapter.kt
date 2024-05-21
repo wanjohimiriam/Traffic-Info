@@ -1,5 +1,7 @@
 package com.example.trafficapp
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trafficapp.MyAdapter.MyViewHolder
 
 // Optional import if you prefer ShapeableImageView
-class MyAdapter(private val data: List<News>) : RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(private var data: List<News>) : RecyclerView.Adapter<MyViewHolder>() {
+
     private val imageIds = intArrayOf( // Hardcoded image resource IDs
         R.drawable.road_closed,
         R.drawable.accident_road,
         R.drawable.heavy_traffic,
         R.drawable.maintainance_road
     )
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -52,6 +54,7 @@ class MyAdapter(private val data: List<News>) : RecyclerView.Adapter<MyViewHolde
         holder.locality.text = currentItem.locality
         holder.condition.text = currentItem.condition
     }
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleImage // Use ImageView or ShapeableImageView based on preference
