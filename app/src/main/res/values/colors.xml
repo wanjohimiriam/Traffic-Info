@@ -6,4 +6,8 @@
     <color name="fadeblack">#686865</color>
     <color name="underline">#D8D6D6</color>
     <color name="pink">#AA336A</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>

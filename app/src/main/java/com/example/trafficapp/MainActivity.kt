@@ -8,16 +8,19 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Collections
 
 class MainActivity : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var newsList: List<News>
+//    private lateinit var newsList: List<News>
+    private lateinit var newsList: MutableList<News>
     private lateinit var progressBar: ProgressBar
     private lateinit var manager: RecyclerView.LayoutManager
     private lateinit var myAdapter: RecyclerView.Adapter<MyAdapter.MyViewHolder>
@@ -53,6 +56,12 @@ class MainActivity : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
 
         Log.d(TAG, "onCreate")
         onRefresh()
+
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(newRecyclerView)
+
+
     }
     override fun onRefresh() {
 
@@ -71,6 +80,8 @@ class MainActivity : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
             override fun onResponse(call: Call<List<News>>, response: Response<List<News>>) {
                 if (response.isSuccessful) {
                     response.body()?.let { news ->
+                        newsList.clear()
+                        newsList.addAll(news)
                         // Data is successfully received, update UI
                         myAdapter = MyAdapter(news)
                         newRecyclerView.adapter = myAdapter
@@ -105,4 +116,33 @@ class MainActivity : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
     companion object {
         private const val TAG = "MainActivity"
     }
+
+    private val itemTouchHelperCallback: ItemTouchHelper.Callback = object : ItemTouchHelper.Callback() {
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            val swipeFlags = 0 // Disable swipe for now (optional)
+            return makeMovementFlags(dragFlags, swipeFlags)
+        }
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+            val fromPos = viewHolder.adapterPosition
+            val toPos = target.adapterPosition
+            Collections.swap(newsList, fromPos, toPos)
+            myAdapter.notifyItemMoved(fromPos, toPos)
+            Log.d(TAG, "OnMove Function List: $newsList")
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            // Implement swipe functionality if needed
+            val position = viewHolder.adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                newsList.removeAt(position)
+                myAdapter.notifyItemRemoved(position)
+            }
+            Log.d(TAG, "OnSwiped Function List: $newsList")
+        }
+    }
+
 }
