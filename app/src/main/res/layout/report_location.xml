@@ -2,7 +2,8 @@
     style="@style/Widget.TrafficApp.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.TrafficApp.AppWidgetContainer">
+    android:theme="@style/Theme.TrafficApp.AppWidgetContainer"
+    android:background="@drawable/background_t">
 
     <TextView
         android:id="@+id/appwidget_text"
@@ -17,5 +18,7 @@
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
         android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/red"
         android:textStyle="bold|italic" />
 </RelativeLayout>
